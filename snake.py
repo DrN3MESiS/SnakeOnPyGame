@@ -10,7 +10,16 @@ import random
 
 
 class Snake:
-    _length = int()
+    _length = 3
 
-    def __init__(self, length):
-        self._length = length
+    def __init__(self, defPos):
+        pass
+
+    def resetPos(self, newPos):
+        pass
+
+    def movement(self):
+        pass
+
+    def increaseLength(self):
+        pass
