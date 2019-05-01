@@ -6,6 +6,8 @@
 import sys
 import pygame
 from snake import Snake
+import random
+from block import Block
 
 # Functions
 
@@ -31,21 +33,42 @@ class Game:
         self.window = pygame.display.set_mode((self.width, self.width))
 
         # Create Player
-        self.player = Snake((0, 0))
+        self.player = Snake((10, 10))
+
+        # Create reward object
+        self.RW = Block(self.createReward(), color=(255, 255, 255))
 
         # Updating Scene
         lock = True
         while lock:
             pygame.time.delay(self.ms)
             self.clock.tick(10)
+            self.player.movement()
+            if self.player.body[0].pos == self.RW.pos:
+                self.player.increaseLength()
+                self.RW = Block(self.createReward(), color=(255, 255, 255))
             self.recreateScene(self.window)
         pass
 
     # Updating Window
-    def recreateScene(self, objWin):
-        objWin.fill((75, 91, 90))
-        self.drawGrid(objWin)
+    def recreateScene(self, surface):
+        surface.fill((75, 91, 90))
+        self.player.render(surface)
+        self.RW.render(surface)
+        self.drawGrid(surface)
         pygame.display.update()
+
+    def createReward(self):
+        positions = self.player.body
+        while True:
+            x = random.randrange(self.grid_rows)
+            y = random.randrange(self.grid_rows)
+            if len(list(filter(lambda z: z.pos == (x, y), positions))) > 0:
+                continue
+            else:
+                break
+
+        return (x, y)
 
     def drawGrid(self, Surface):
         sizeBtwn = self.width // self.grid_rows
