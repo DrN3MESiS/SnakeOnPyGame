@@ -23,9 +23,17 @@ class Block(object):
         self.pos = (self.pos[0] + self.ownX, self.pos[1] + self.ownY)
 
     def render(self, surface, eyes=False):
+<<<<<<< HEAD
         dt = self.w // self.rows
         i = self.pos[0]
         j = self.pos[1]
 
         pygame.draw.rect(surface, self.color,
                          (i*dt+1, j*dt+2, dt-2, dt-2))
+=======
+        dis = self.w // self.rows
+        i = self.pos[0]
+        j = self.pos[1]
+
+        pygame.draw.rect(surface, self.color, (i*dis+1, j*dis+1, dis-2, dis-2))
+>>>>>>> version/0.0.1
