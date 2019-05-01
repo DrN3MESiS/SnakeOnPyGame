@@ -8,6 +8,8 @@ import pygame
 from snake import Snake
 import random
 from block import Block
+import tkinter as tk
+from tkinter import messagebox
 
 # Functions
 
@@ -47,8 +49,25 @@ class Game:
             if self.player.body[0].pos == self.RW.pos:
                 self.player.increaseLength()
                 self.RW = Block(self.createReward(), color=(255, 255, 255))
+
+            for x in range(len(self.player.body)):
+                if self.player.body[x].pos in list(map(lambda z: z.pos, self.player.body[x+1:])):
+                    print('Score:', len(self.player.body))
+                    self.MSGBOX('You lost', 'Play again?')
+                    self.player.resetPos((10, 10))
+                    break
+
             self.recreateScene(self.window)
-        pass
+
+    def MSGBOX(self, sub, content):
+        root = tk.Tk()
+        root.attributes("-topmost", True)
+        root.withdraw()
+        messagebox.showinfo(sub, content)
+        try:
+            root.destroy()
+        except:
+            pass
 
     # Updating Window
     def recreateScene(self, surface):
