@@ -5,6 +5,7 @@
 # *** Libraries ***
 import sys
 import pygame as engine
+from snake import Snake
 
 # Initialize the game engine and properties declaration
 engine.init()
