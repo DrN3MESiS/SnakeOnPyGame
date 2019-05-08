@@ -53,7 +53,8 @@ class Game:
             for x in range(len(self.player.body)):
                 if self.player.body[x].pos in list(map(lambda z: z.pos, self.player.body[x+1:])):
                     print('Score:', len(self.player.body))
-                    self.MSGBOX('You lost', 'Play again?')
+                    self.MSGBOX('You lost', 'Your score was ' + str(len(self.player.body)) +
+                                ' points. Do you want to play again?')
                     self.player.resetPos((10, 10))
                     break
 
@@ -71,10 +72,9 @@ class Game:
 
     # Updating Window
     def recreateScene(self, surface):
-        surface.fill((75, 91, 90))
+        surface.fill((7, 0, 58))
         self.player.render(surface)
         self.RW.render(surface)
-        self.drawGrid(surface)
         pygame.display.update()
 
     def createReward(self):

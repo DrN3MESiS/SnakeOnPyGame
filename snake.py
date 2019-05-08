@@ -15,7 +15,7 @@ class Snake:
     _length = 3
     body = []
     turns = {}
-    defColor = (177, 183, 0)
+    defColor = (0, 233, 255)
 
     def __init__(self, defPos):
         self.head = Block(defPos)
