@@ -12,7 +12,6 @@ from block import Block
 
 
 class Snake:
-    _length = 3
     body = []
     turns = {}
     defColor = (0, 233, 255)
@@ -22,6 +21,8 @@ class Snake:
         self.body.append(self.head)
         self.ownX = 0
         self.ownY = 1
+        self.increaseLength()
+        self.increaseLength()
 
     def render(self, surface):
         for i, c in enumerate(self.body):

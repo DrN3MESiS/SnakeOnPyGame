@@ -24,9 +24,6 @@ class Game:
     def __init__(self, grid_rows, ms):
         self.grid_rows = grid_rows
         self.ms = ms
-        self.start_game()
-
-    def start_game(self):
         # Initialize the game engine and properties declaration
         pygame.init()
         self.width = 1000
@@ -34,6 +31,27 @@ class Game:
         # Initialize window
         self.window = pygame.display.set_mode((self.width, self.width))
 
+        self.game_intro()
+        self.start_game()
+
+    def game_intro(self):
+        intro = True
+        while intro:
+            for event in pygame.event.get():
+                print(event)
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+
+            self.window.fill((255,255,255))
+            largeText = pygame.font.Font('freesansbold.ttf', 115)
+            TextSurf, TextRect = text_objects("A bit Racey", largeText)
+            TextRect.center = ((display_width/2), (display_height/2))
+            self.window.blit(TextSurf, TextRect)
+            pygame.display.update()
+            self.clock.tick(15)
+
+    def start_game(self):
         # Create Player
         self.player = Snake((10, 10))
 
@@ -103,3 +121,5 @@ class Game:
 
 
 start = Game(50, 50)
+pygame.quit()
+quit()
