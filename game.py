@@ -26,11 +26,11 @@ class Game:
         self.ms = ms
         # Initialize the game engine and properties declaration
         pygame.init()
-        self.width = 1000
-
+        self.width = 600
         # Initialize window
         self.window = pygame.display.set_mode((self.width, self.width))
-
+        pygame.display.set_caption('Snake Game: Alan Maldonado')
+        # Scene Control
         self.game_intro()
         self.start_game()
 
@@ -38,18 +38,20 @@ class Game:
         intro = True
         while intro:
             for event in pygame.event.get():
-                print(event)
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        print('SPACE Key has been pressed')
+                        intro = False
 
-            self.window.fill((255,255,255))
-            largeText = pygame.font.Font('freesansbold.ttf', 115)
-            TextSurf, TextRect = text_objects("A bit Racey", largeText)
-            TextRect.center = ((display_width/2), (display_height/2))
-            self.window.blit(TextSurf, TextRect)
-            pygame.display.update()
-            self.clock.tick(15)
+            self.window.fill((0, 0, 0))
+            self.text_to_screen(self.window, 'Snake', 175, 100, 120)
+            self.text_to_screen(self.window, '2K19', 100, 200, 250)
+            self.text_to_screen(
+                self.window, 'Press the SPACE key to play!', 100, 500, 42)
+            pygame.display.flip()
 
     def start_game(self):
         # Create Player
@@ -118,6 +120,12 @@ class Game:
 
             pygame.draw.line(Surface, self.grid_color, (x, 0), (x, self.width))
             pygame.draw.line(Surface, self.grid_color, (0, y), (self.width, y))
+
+    def text_to_screen(self, screen, text, x, y, size=50, color=(255, 255, 255)):
+        text = str(text)
+        font = pygame.font.Font(None, size)
+        text = font.render(text, True, color)
+        screen.blit(text, (x, y))
 
 
 start = Game(50, 50)
