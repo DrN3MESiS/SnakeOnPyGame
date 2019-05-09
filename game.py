@@ -16,7 +16,7 @@ from tkinter import messagebox
 
 class Game:
     # Variables
-    grid_rows = 50
+    grid_rows = 20
     grid_color = (91, 117, 115)
     ms = 50
     clock = pygame.time.Clock()
@@ -24,16 +24,36 @@ class Game:
     def __init__(self, grid_rows, ms):
         self.grid_rows = grid_rows
         self.ms = ms
-        self.start_game()
-
-    def start_game(self):
         # Initialize the game engine and properties declaration
         pygame.init()
-        self.width = 1000
-
+        self.width = 600
         # Initialize window
         self.window = pygame.display.set_mode((self.width, self.width))
+        pygame.display.set_caption('Snake Game: Alan Maldonado')
+        # Scene Control
+        self.game_intro()
+        self.start_game()
 
+    def game_intro(self):
+        intro = True
+        while intro:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        print('SPACE Key has been pressed')
+                        intro = False
+
+            self.window.fill((0, 0, 0))
+            self.text_to_screen(self.window, 'Snake', 175, 100, 120)
+            self.text_to_screen(self.window, '2K19', 100, 200, 250)
+            self.text_to_screen(
+                self.window, 'Press the SPACE key to play!', 100, 500, 42)
+            pygame.display.flip()
+
+    def start_game(self):
         # Create Player
         self.player = Snake((10, 10))
 
@@ -43,6 +63,13 @@ class Game:
         # Updating Scene
         lock = True
         while lock:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        print('Pause Menu has been opened')
             pygame.time.delay(self.ms)
             self.clock.tick(10)
             self.player.movement()
@@ -74,6 +101,7 @@ class Game:
     def recreateScene(self, surface):
         surface.fill((7, 0, 58))
         self.player.render(surface)
+        self.drawGrid(surface)
         self.RW.render(surface)
         pygame.display.update()
 
@@ -101,5 +129,13 @@ class Game:
             pygame.draw.line(Surface, self.grid_color, (x, 0), (x, self.width))
             pygame.draw.line(Surface, self.grid_color, (0, y), (self.width, y))
 
+    def text_to_screen(self, screen, text, x, y, size=50, color=(255, 255, 255)):
+        text = str(text)
+        font = pygame.font.Font(None, size)
+        text = font.render(text, True, color)
+        screen.blit(text, (x, y))
+
 
 start = Game(50, 50)
+pygame.quit()
+quit()
