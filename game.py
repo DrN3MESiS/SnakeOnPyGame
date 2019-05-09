@@ -13,6 +13,7 @@ from tkinter import messagebox
 
 
 class Game:
+    highScore = 0
     grid_color = (10, 0, 86)
     clock = pygame.time.Clock()
 
@@ -71,9 +72,15 @@ class Game:
 
             for x in range(len(self.player.body)):
                 if self.player.body[x].pos in list(map(lambda z: z.pos, self.player.body[x+1:])):
-                    print('Score:', len(self.player.body))
-                    self.MSGBOX('You lost', 'Your score was ' + str(len(self.player.body)) +
-                                ' points. Do you want to play again?')
+                    print('Score:', len(self.player.body) - 2)
+                    if len(self.player.body) - 2 > self.highScore:
+                        self.highScore = len(self.player.body) - 2
+                        print('New High Score!')
+                        self.MSGBOX('You lost', 'You made a new Highscore of: ' + str(len(self.player.body) - 2) +
+                                    ' points. Do you want to play again?')
+                    else:
+                        self.MSGBOX('You lost', 'Your score was ' + str(len(self.player.body) - 2) +
+                                    ' points. Do you want to play again?')
                     self.player.resetPos((10, 10))
                     break
 
@@ -93,6 +100,11 @@ class Game:
         surface.fill((7, 0, 58))
         self.player.render(surface)
         self.drawGrid(surface)
+        self.text_to_screen(surface, 'High Score: ' +
+                            str(self.highScore), 20, 20, size=20)
+        self.text_to_screen(
+            surface, 'Score: ' + str(len(self.player.body) - 2), 500, 20, size=20)
+        pygame.display.flip()
         self.RW.render(surface)
         pygame.display.update()
 
