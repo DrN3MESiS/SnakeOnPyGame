@@ -16,8 +16,10 @@ class Snake:
     turns = {}
     defColor = (0, 233, 255)
 
-    def __init__(self, defPos):
-        self.head = Block(defPos)
+    def __init__(self, defPos, rows, w):
+        self.grid_rows = rows
+        self.width = w
+        self.head = Block(defPos, rows=self.grid_rows, w=self.width)
         self.body.append(self.head)
         self.ownX = 0
         self.ownY = 1
@@ -32,7 +34,7 @@ class Snake:
                 c.render(surface)
 
     def resetPos(self, newPos):
-        self.head = Block(newPos)
+        self.head = Block(newPos, rows=self.grid_rows, w=self.width)
         self.body = []
         self.body.append(self.head)
         self.increaseLength()
@@ -93,13 +95,17 @@ class Snake:
         dx, dy = tail.ownX, tail.ownY
 
         if dx == 1 and dy == 0:
-            self.body.append(Block((tail.pos[0]-1, tail.pos[1])))
+            self.body.append(
+                Block((tail.pos[0]-1, tail.pos[1]), rows=self.grid_rows, w=self.width))
         elif dx == -1 and dy == 0:
-            self.body.append(Block((tail.pos[0]+1, tail.pos[1])))
+            self.body.append(
+                Block((tail.pos[0]+1, tail.pos[1]), rows=self.grid_rows, w=self.width))
         elif dx == 0 and dy == 1:
-            self.body.append(Block((tail.pos[0], tail.pos[1]-1)))
+            self.body.append(
+                Block((tail.pos[0], tail.pos[1]-1), rows=self.grid_rows, w=self.width))
         elif dx == 0 and dy == -1:
-            self.body.append(Block((tail.pos[0], tail.pos[1]+1)))
+            self.body.append(
+                Block((tail.pos[0], tail.pos[1]+1), rows=self.grid_rows, w=self.width))
 
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
