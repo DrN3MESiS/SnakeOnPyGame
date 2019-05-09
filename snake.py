@@ -34,6 +34,8 @@ class Snake:
         self.head = Block(newPos)
         self.body = []
         self.body.append(self.head)
+        self.increaseLength()
+        self.increaseLength()
         self.turns = {}
         self.ownX = 0
         self.ownY = 1
