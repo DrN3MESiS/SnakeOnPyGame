@@ -16,7 +16,7 @@ from tkinter import messagebox
 
 class Game:
     # Variables
-    grid_rows = 50
+    grid_rows = 20
     grid_color = (91, 117, 115)
     ms = 50
     clock = pygame.time.Clock()
@@ -63,6 +63,13 @@ class Game:
         # Updating Scene
         lock = True
         while lock:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        print('Pause Menu has been opened')
             pygame.time.delay(self.ms)
             self.clock.tick(10)
             self.player.movement()
@@ -94,6 +101,7 @@ class Game:
     def recreateScene(self, surface):
         surface.fill((7, 0, 58))
         self.player.render(surface)
+        self.drawGrid(surface)
         self.RW.render(surface)
         pygame.display.update()
 
