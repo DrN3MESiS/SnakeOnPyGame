@@ -61,14 +61,14 @@ class Snake:
                     self.ownY = 0
                     self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
 
-                elif keys[pygame.K_DOWN]:
-                    self.ownX = 0
-                    self.ownY = 1
-                    self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
-
                 elif keys[pygame.K_UP]:
                     self.ownX = 0
                     self.ownY = -1
+                    self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
+
+                elif keys[pygame.K_DOWN]:
+                    self.ownX = 0
+                    self.ownY = 1
                     self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
 
         for i, c in enumerate(self.body):
@@ -84,9 +84,9 @@ class Snake:
                 elif c.ownX == 1 and c.pos[0] >= c.rows-1:
                     c.pos = (0, c.pos[1])
                 elif c.ownY == 1 and c.pos[1] >= c.rows-1:
-                    c.pos = (c.pos[1], 0)
+                    c.pos = (c.pos[0], 0)
                 elif c.ownY == -1 and c.pos[1] <= 0:
-                    c.pos = (c.pos[1], c.rows-1)
+                    c.pos = (c.pos[0], c.rows-1)
                 else:
                     c.move(c.ownX, c.ownY)
 
@@ -107,5 +107,5 @@ class Snake:
             self.body.append(
                 Block((tail.pos[0], tail.pos[1]+1), rows=self.grid_rows, w=self.width))
 
-        self.body[-1].dirnx = dx
-        self.body[-1].dirny = dy
+        self.body[-1].ownX = dx
+        self.body[-1].ownY = dy
