@@ -8,10 +8,10 @@ import pygame
 
 
 class Block(object):
-    rows = 50
-    w = 1000
 
-    def __init__(self, defPos, x=1, y=0, color=(177, 183, 0)):
+    def __init__(self, defPos, x=1, y=0, color=(177, 183, 0), rows=50, w=1000):
+        self.rows = rows
+        self.w = w
         self.pos = defPos
         self.ownX = x
         self.ownY = y

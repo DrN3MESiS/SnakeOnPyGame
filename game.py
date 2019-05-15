@@ -11,23 +11,18 @@ from block import Block
 import tkinter as tk
 from tkinter import messagebox
 
-# Functions
-
 
 class Game:
-    # Variables
-    grid_rows = 20
-    grid_color = (91, 117, 115)
-    ms = 50
+    highScore = 0
+    grid_color = (10, 0, 86)
     clock = pygame.time.Clock()
 
-    def __init__(self, grid_rows, ms):
+    def __init__(self, grid_rows, ms, window_width):
         self.grid_rows = grid_rows
         self.ms = ms
-        # Initialize the game engine and properties declaration
+        self.width = window_width
+
         pygame.init()
-        self.width = 600
-        # Initialize window
         self.window = pygame.display.set_mode((self.width, self.width))
         pygame.display.set_caption('Snake Game: Alan Maldonado')
         # Scene Control
@@ -54,13 +49,10 @@ class Game:
             pygame.display.flip()
 
     def start_game(self):
-        # Create Player
-        self.player = Snake((10, 10))
+        self.player = Snake((10, 10), self.grid_rows, self.width)
+        self.RW = Block(self.createReward(), color=(
+            255, 255, 255), rows=self.grid_rows, w=self.width)
 
-        # Create reward object
-        self.RW = Block(self.createReward(), color=(255, 255, 255))
-
-        # Updating Scene
         lock = True
         while lock:
             for event in pygame.event.get():
@@ -68,20 +60,27 @@ class Game:
                     pygame.quit()
                     quit()
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_p:
                         print('Pause Menu has been opened')
             pygame.time.delay(self.ms)
             self.clock.tick(10)
             self.player.movement()
             if self.player.body[0].pos == self.RW.pos:
                 self.player.increaseLength()
-                self.RW = Block(self.createReward(), color=(255, 255, 255))
+                self.RW = Block(self.createReward(), color=(
+                    255, 255, 255), rows=self.grid_rows, w=self.width)
 
             for x in range(len(self.player.body)):
                 if self.player.body[x].pos in list(map(lambda z: z.pos, self.player.body[x+1:])):
-                    print('Score:', len(self.player.body))
-                    self.MSGBOX('You lost', 'Your score was ' + str(len(self.player.body)) +
-                                ' points. Do you want to play again?')
+                    print('Score:', len(self.player.body) - 2)
+                    if len(self.player.body) - 2 > self.highScore:
+                        self.highScore = len(self.player.body) - 2
+                        print('New High Score!')
+                        self.MSGBOX('You lost', 'You made a new Highscore of: ' + str(len(self.player.body) - 2) +
+                                    ' points. Do you want to play again?')
+                    else:
+                        self.MSGBOX('You lost', 'Your score was ' + str(len(self.player.body) - 2) +
+                                    ' points. Do you want to play again?')
                     self.player.resetPos((10, 10))
                     break
 
@@ -97,11 +96,15 @@ class Game:
         except:
             pass
 
-    # Updating Window
     def recreateScene(self, surface):
         surface.fill((7, 0, 58))
         self.player.render(surface)
         self.drawGrid(surface)
+        self.text_to_screen(surface, 'High Score: ' +
+                            str(self.highScore), 20, 20, size=20)
+        self.text_to_screen(
+            surface, 'Score: ' + str(len(self.player.body) - 2), 500, 20, size=20)
+        pygame.display.flip()
         self.RW.render(surface)
         pygame.display.update()
 
@@ -136,6 +139,7 @@ class Game:
         screen.blit(text, (x, y))
 
 
-start = Game(50, 50)
+start = Game(20, 50, 600)
+# start = Game(50, 50, 600) #Default
 pygame.quit()
 quit()

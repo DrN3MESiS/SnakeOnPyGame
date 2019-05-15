@@ -16,8 +16,10 @@ class Snake:
     turns = {}
     defColor = (0, 233, 255)
 
-    def __init__(self, defPos):
-        self.head = Block(defPos)
+    def __init__(self, defPos, rows, w):
+        self.grid_rows = rows
+        self.width = w
+        self.head = Block(defPos, rows=self.grid_rows, w=self.width)
         self.body.append(self.head)
         self.ownX = 0
         self.ownY = 1
@@ -32,7 +34,7 @@ class Snake:
                 c.render(surface)
 
     def resetPos(self, newPos):
-        self.head = Block(newPos)
+        self.head = Block(newPos, rows=self.grid_rows, w=self.width)
         self.body = []
         self.body.append(self.head)
         self.increaseLength()
@@ -59,14 +61,14 @@ class Snake:
                     self.ownY = 0
                     self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
 
-                elif keys[pygame.K_DOWN]:
-                    self.ownX = 0
-                    self.ownY = 1
-                    self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
-
                 elif keys[pygame.K_UP]:
                     self.ownX = 0
                     self.ownY = -1
+                    self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
+
+                elif keys[pygame.K_DOWN]:
+                    self.ownX = 0
+                    self.ownY = 1
                     self.turns[self.head.pos[:]] = [self.ownX, self.ownY]
 
         for i, c in enumerate(self.body):
@@ -82,9 +84,9 @@ class Snake:
                 elif c.ownX == 1 and c.pos[0] >= c.rows-1:
                     c.pos = (0, c.pos[1])
                 elif c.ownY == 1 and c.pos[1] >= c.rows-1:
-                    c.pos = (c.pos[1], 0)
+                    c.pos = (c.pos[0], 0)
                 elif c.ownY == -1 and c.pos[1] <= 0:
-                    c.pos = (c.pos[1], c.rows-1)
+                    c.pos = (c.pos[0], c.rows-1)
                 else:
                     c.move(c.ownX, c.ownY)
 
@@ -93,13 +95,17 @@ class Snake:
         dx, dy = tail.ownX, tail.ownY
 
         if dx == 1 and dy == 0:
-            self.body.append(Block((tail.pos[0]-1, tail.pos[1])))
+            self.body.append(
+                Block((tail.pos[0]-1, tail.pos[1]), rows=self.grid_rows, w=self.width))
         elif dx == -1 and dy == 0:
-            self.body.append(Block((tail.pos[0]+1, tail.pos[1])))
+            self.body.append(
+                Block((tail.pos[0]+1, tail.pos[1]), rows=self.grid_rows, w=self.width))
         elif dx == 0 and dy == 1:
-            self.body.append(Block((tail.pos[0], tail.pos[1]-1)))
+            self.body.append(
+                Block((tail.pos[0], tail.pos[1]-1), rows=self.grid_rows, w=self.width))
         elif dx == 0 and dy == -1:
-            self.body.append(Block((tail.pos[0], tail.pos[1]+1)))
+            self.body.append(
+                Block((tail.pos[0], tail.pos[1]+1), rows=self.grid_rows, w=self.width))
 
-        self.body[-1].dirnx = dx
-        self.body[-1].dirny = dy
+        self.body[-1].ownX = dx
+        self.body[-1].ownY = dy
