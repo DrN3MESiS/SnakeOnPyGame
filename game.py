@@ -12,6 +12,10 @@ from block import Block
 import tkinter as tk
 from tkinter import messagebox
 
+# Main Class
+# Contains: - Game Scripts - Scene Changer - UI Menus
+# Description: The game class is the script that is required to start the game.
+
 
 class Game:
     pause = False
@@ -26,6 +30,7 @@ class Game:
     bright_red = (255, 0, 0)
     bright_green = (0, 255, 0)
 
+    # Game Initializer Method
     def __init__(self, grid_rows, ms, window_width):
         self.grid_rows = grid_rows
         self.ms = ms
@@ -37,6 +42,7 @@ class Game:
         # Scene Control
         self.game_intro()
 
+    # Game Main Menu Method
     def game_intro(self):
         intro = True
         while intro:
@@ -59,6 +65,7 @@ class Game:
             self.text_to_screen(self.window, 'Quit', 415, 460, 42)
             pygame.display.flip()
 
+    # Pause Menu Method
     def game_pause(self):
         while self.pause:
             for event in pygame.event.get():
@@ -83,9 +90,12 @@ class Game:
             pygame.display.update()
             self.clock.tick(15)
 
+    # Un-pause method
+
     def unpause(self):
         self.pause = False
 
+    # Player Game Over Method
     def diedFunction(self):
         while self.died:
             for event in pygame.event.get():
@@ -113,11 +123,13 @@ class Game:
             pygame.display.update()
             self.clock.tick(15)
 
+    # Player Restart Method
     def restart(self):
         self.player.resetPos((10, 10))
         self.died = False
         pygame.display.update()
 
+    # Main Game Method (This is the game it-self)
     def start_game(self):
         self.player = Snake((10, 10), self.grid_rows, self.width)
         self.RW = Block(self.createReward(), color=(
@@ -153,16 +165,7 @@ class Game:
 
             self.recreateScene(self.window)
 
-    def MSGBOX(self, sub, content):
-        root = tk.Tk()
-        root.attributes("-topmost", True)
-        root.withdraw()
-        messagebox.showinfo(sub, content)
-        try:
-            root.destroy()
-        except:
-            pass
-
+    # In-game required method
     def recreateScene(self, surface):
         surface.fill((7, 0, 58))
         self.player.render(surface)
@@ -177,6 +180,7 @@ class Game:
         self.RW.render(surface)
         pygame.display.update()
 
+    # Game Reward System (Class Method)
     def createReward(self):
         positions = self.player.body
         while True:
@@ -189,6 +193,7 @@ class Game:
 
         return (x, y)
 
+    # In-game Grid Drawing Method
     def drawGrid(self, Surface):
         sizeBtwn = self.width // self.grid_rows
         x = 0
@@ -201,12 +206,14 @@ class Game:
             pygame.draw.line(Surface, self.grid_color, (x, 0), (x, self.width))
             pygame.draw.line(Surface, self.grid_color, (0, y), (self.width, y))
 
+    # Text Rendering Method
     def text_to_screen(self, screen, text, x, y, size=50, color=(255, 255, 255)):
         text = str(text)
         font = pygame.font.Font(None, size)
         text = font.render(text, True, color)
         screen.blit(text, (x, y))
 
+    # Button Rendering Method
     def button(self, x, y, w, h, ic, ac, action=None):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -218,12 +225,14 @@ class Game:
         else:
             pygame.draw.rect(self.window, ic, (x, y, w, h))
 
+    # Game Exit Method
     def quit(self):
         pygame.quit()
         quit()
 
 
+# Default Game Start
+#    grid_rows game_ms window_width
 start = Game(20, 0, 600)
-# start = Game(50, 50, 600) #Default
 pygame.quit()
 quit()
