@@ -16,6 +16,7 @@ class Snake:
     turns = {}
     defColor = (0, 233, 255)
 
+    # Snake Class Initializer
     def __init__(self, defPos, rows, w):
         self.grid_rows = rows
         self.width = w
@@ -26,6 +27,7 @@ class Snake:
         self.increaseLength()
         self.increaseLength()
 
+    # Snake Rendering Method
     def render(self, surface):
         for i, c in enumerate(self.body):
             if i == 0:
@@ -33,6 +35,7 @@ class Snake:
             else:
                 c.render(surface)
 
+    # Snake Position Reset Method
     def resetPos(self, newPos):
         self.head = Block(newPos, rows=self.grid_rows, w=self.width)
         self.body = []
@@ -43,6 +46,7 @@ class Snake:
         self.ownX = 0
         self.ownY = 1
 
+    # Snake Movement Method
     def movement(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -90,6 +94,7 @@ class Snake:
                 else:
                     c.move(c.ownX, c.ownY)
 
+    # Snake Length and Score Increaser Method
     def increaseLength(self):
         tail = self.body[-1]
         dx, dy = tail.ownX, tail.ownY
