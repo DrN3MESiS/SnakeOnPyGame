@@ -1,5 +1,18 @@
-# [Python] Snake Game
+# Classic Snake Game
 
-A simple Snake game (Classic Version) made with PyGame on Python 3.7
+### Details
+* Language
+  * Python
+* Project Relation
+  * 
+* External Dependencies
+  * Pygame
+  * Pytoexec
 
-Author: Alan Maldonado
+### Devoper(s)
+[Alan Enrique Maldonado Navarro](https://github.com/DrN3MESiS/)
+
+#### What did I learned from this project?
+* Learned to code a game in Python
+* Learned to control data structures in Python
+* Learned all the Python basics
